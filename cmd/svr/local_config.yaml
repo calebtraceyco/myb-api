@@ -1,0 +1,18 @@
+Env: "Local"
+Port: 6080
+AppName: "go-gql-api"
+ComponentConfigs:
+  Client:
+    Timeout: 15
+    IdleConnTimeout: 15
+    MaxIdleConsPerHost: 50
+    MaxConsPerHost: 0
+    DisableCompression: 2
+    InsecureSkipVerify: 1
+Databases:
+  - Name: "PSQL"
+    Database: "rugby_db"
+    Server: "localhost:5432"
+    Username: "calebtracey"
+    Scheme: "postgres"
+    PasswordEnvVariable: "DB_PASSWORD_LOCAL"
