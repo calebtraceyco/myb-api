@@ -12,12 +12,9 @@ import (
 const configPath = "dev_config.yaml"
 
 type Application struct {
-	Initializer InitializerI
 	Config      *config.Config
-}
-
-func init() {
-	log.Infoln("initializing...")
+	Initializer InitializerI
+	Router      endpoints.RouterI
 }
 
 //	@title			Mind Your Business API
@@ -44,16 +41,24 @@ func init() {
 func main() {
 	defer panicQuit()
 
-	appConfig := config.New(configPath)
-	appRouter := &endpoints.Router{Service: new(facade.Service)}
+	app := &Application{
+		Config:      config.New(configPath),
+		Initializer: &Initializer{},
+		Router:      &endpoints.Router{Service: new(facade.Service)},
+	}
 
-	if err := new(Initializer).Database(appConfig, appRouter.Service.(*facade.Service)); err != nil {
-		log.Errorf("failed to initialize database: %s", err)
+	if router, ok := app.Router.(*endpoints.Router); ok {
+		if err := new(Initializer).Database(app.Config, router.Service.(*facade.Service)); err != nil {
+			log.Errorf("failed to initialize database: %s", err)
+			panicQuit()
+		}
+	} else {
+		log.Errorf("router failed to initialize")
 		panicQuit()
 	}
 
-	log.Fatal(listenAndServe(appConfig.Port.Value, gziphandler.GzipHandler(
-		routes.Handler{Router: appRouter}.Routes(),
+	log.Fatal(listenAndServe(app.Config.Port.Value, gziphandler.GzipHandler(
+		routes.Handler{Router: app.Router}.RouteHandler(),
 	)),
 	)
 }

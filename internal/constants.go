@@ -1,5 +1,6 @@
 package internal
 
+// ALLOWED ORIGINS
 const (
 	LocalhostSwagger = "http://localhost:6080/swagger/"
 	LocalhostCRA     = "http://localhost:3000"

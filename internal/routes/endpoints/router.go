@@ -13,3 +13,8 @@ type RouterI interface {
 type Router struct {
 	Service facade.ServiceI
 }
+
+const (
+	Health  = "/health"
+	NewUser = "/newUser"
+)
