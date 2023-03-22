@@ -2,6 +2,7 @@ package main
 
 import (
 	config "github.com/calebtracey/config-yaml"
+	"github.com/calebtracey/mind-your-business-api/internal/dao/psql"
 	"github.com/calebtracey/mind-your-business-api/internal/facade"
 	log "github.com/sirupsen/logrus"
 )
@@ -15,6 +16,7 @@ var (
 
 func init() {
 	log.Infoln("=== initializing...")
+
 	appConfig = config.New(configPath)
 	appService = facade.Service{}
 	Port = appConfig.Port.Value
@@ -26,7 +28,9 @@ func initializeDatabase() {
 	if psqlService, err := appConfig.Database(PostgresDB); err != nil {
 		initErrs = append(initErrs, err)
 	} else {
-		appService.Db = psqlService.DB
+		appService.PSQL = psql.DAO{
+			Db: psqlService.DB,
+		}
 	}
 }
 

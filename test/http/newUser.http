@@ -1,0 +1,3 @@
+POST http://{{LOCAL_URL}}/newUser
+
+< request.json

@@ -6,7 +6,7 @@ require (
 	github.com/NYTimes/gziphandler v1.1.1
 	github.com/calebtracey/config-yaml v1.0.11
 	github.com/go-chi/chi/v5 v5.0.8
-	github.com/rs/cors v1.8.3
+	github.com/go-chi/cors v1.2.1
 	github.com/sirupsen/logrus v1.9.0
 	golang.org/x/sync v0.1.0
 )
