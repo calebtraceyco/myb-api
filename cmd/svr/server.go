@@ -13,7 +13,7 @@ import (
 )
 
 func listenAndServe(addr string, handler http.Handler) error {
-	log.Infof("server listening on PORT: %s", addr)
+	log.Infof("server UP and listening on PORT: %s", addr)
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%s", addr),
@@ -43,7 +43,7 @@ func listenAndServe(addr string, handler http.Handler) error {
 
 		log.Infoln(shutdownStarted)
 
-		if err := srv.Shutdown(context.Background()); err != nil {
+		if err := srv.Shutdown(ctx); err != nil {
 			return err
 		}
 
@@ -53,30 +53,18 @@ func listenAndServe(addr string, handler http.Handler) error {
 	})
 
 	g.Go(func() error {
-		if err := srv.ListenAndServe(); err != nil {
-			return err
-		}
-		return nil
+		return srv.ListenAndServe()
 	})
 
 	if err := g.Wait(); err != nil {
 		log.Error(err)
+		err = fmt.Errorf("listenAndServe: %w", err)
+
 		return err
 	}
 
 	return nil
 }
-
-//func CorsHandler() *cors.Cors {
-//	return cors.New(cors.Options{
-//		AllowedOrigins:   allowedOrigins,
-//		AllowCredentials: true,
-//		AllowedMethods:   allowedMethods,
-//		AllowedHeaders:   allowedHeaders,
-//		// Enable Debugging for testing, consider disabling in production
-//		Debug: false,
-//	})
-//}
 
 const (
 	SIGINTMessage  = "SIGINT received (Control-C ?)"

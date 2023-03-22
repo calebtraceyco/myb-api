@@ -7,31 +7,24 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var (
-	appConfig  *config.Config
-	appService facade.Service
-	initErrs   []error
-	Port       string
-)
+type InitializerI interface {
+	Router(cfg *config.Config, svc *facade.Service) error
+	Database(cfg *config.Config, svc *facade.Service) error
+}
+type Initializer struct{}
 
-func init() {
-	log.Infoln("=== initializing...")
-
-	appConfig = config.New(configPath)
-	appService = facade.Service{}
-	Port = appConfig.Port.Value
-
-	initializeDatabase()
+func (i *Initializer) Router(cfg *config.Config, svc *facade.Service) error {
+	log.Infoln("Router...")
+	return nil
 }
 
-func initializeDatabase() {
-	if psqlService, err := appConfig.Database(PostgresDB); err != nil {
-		initErrs = append(initErrs, err)
+func (i *Initializer) Database(cfg *config.Config, svc *facade.Service) error {
+	if psqlService, err := cfg.Database(PostgresDB); err != nil {
+		return err
 	} else {
-		appService.PSQL = psql.DAO{
-			Db: psqlService.DB,
-		}
+		svc.PSQL = psql.DAO{Db: psqlService.DB}
 	}
+	return nil
 }
 
 const PostgresDB = "PSQL"
