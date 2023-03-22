@@ -1,0 +1,19 @@
+Env: "Dev"
+Port: 6080
+AppName: "mind-your-business-db"
+ComponentConfigs:
+  Client:
+    Timeout: 15
+    IdleConnTimeout: 15
+    MaxIdleConsPerHost: 50
+    MaxConsPerHost: 0
+    DisableCompression: 2
+    InsecureSkipVerify: 1
+Databases:
+  - Name: "PSQL"
+    Database: "postgres"
+    Server: "db.jsbmdtfxmaullqzhyokq.supabase.co:5432"
+    Username: "postgres"
+    Scheme: "postgres"
+    AuthRequired: "true"
+    AuthEnvironmentVariable: "DB_PASSWORD_DEV"
