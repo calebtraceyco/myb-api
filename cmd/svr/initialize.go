@@ -6,21 +6,27 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var service facade.Service
-var initErrs []error
+var (
+	appConfig  *config.Config
+	appService facade.Service
+	initErrs   []error
+	Port       string
+)
 
 func init() {
 	log.Infoln("=== initializing...")
-	appConfig := config.New(configPath)
+	appConfig = config.New(configPath)
+	appService = facade.Service{}
+	Port = appConfig.Port.Value
 
-	initializeDatabase(appConfig)
+	initializeDatabase()
 }
 
-func initializeDatabase(appConfig *config.Config) {
+func initializeDatabase() {
 	if psqlService, err := appConfig.Database(PostgresDB); err != nil {
 		initErrs = append(initErrs, err)
 	} else {
-		service.Db = psqlService.DB
+		appService.Db = psqlService.DB
 	}
 }
 

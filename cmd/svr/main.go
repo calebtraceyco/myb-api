@@ -16,10 +16,9 @@ func main() {
 
 	} else {
 
-		log.Fatal(listenAndServe("8080", gziphandler.GzipHandler(
+		log.Fatal(listenAndServe(Port, gziphandler.GzipHandler(
 			corsHandler().Handler(
-				routes.Handler{Service: service}.
-					Routes(),
+				routes.Handler{Service: appService}.Routes(),
 			)),
 		))
 	}
