@@ -5,11 +5,11 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
+	"net/http"
 	"time"
 )
 
 func setMiddleware(r *chi.Mux) {
-	// docs: https://github.com/go-chi/chi
 	// Injects a request ID into the context of each request
 	r.Use(middleware.RequestID)
 	// Sets a http.Request's RemoteAddr to either X-Real-IP or X-Forwarded-For
@@ -23,19 +23,10 @@ func setMiddleware(r *chi.Mux) {
 	// processing should be stopped.
 	r.Use(middleware.Timeout(60 * time.Second))
 	r.Use(cors.Handler(cors.Options{
-		// AllowedOrigins:   []string{"https://foo.com"}, // Use this to allow specific origin hosts
-		AllowedOrigins: allowedOrigins,
-		// AllowOriginFunc:  func(r *http.Request, origin string) bool { return true },
-		AllowedMethods: allowedMethods,
-		AllowedHeaders: allowedHeaders,
-		//ExposedHeaders:   []string{"Link"},
+		AllowedOrigins:   []string{in.LocalhostSwagger, in.LocalhostCRA, in.LocalhostVite, in.LocalhostVite2, in.GithubPages, in.GithubPages1, in.GithubPages2},
+		AllowedMethods:   []string{http.MethodGet, http.MethodPost, http.MethodOptions, http.MethodDelete, http.MethodPut},
+		AllowedHeaders:   []string{"Access-Control-Allow-Methods", "Access-Control-Allow-Origin", "X-Requested-With", "Authorization", "Content-Type", "X-Requested-With", "Bearer", "Origin"},
 		AllowCredentials: true,
 		MaxAge:           300, // Maximum value not ignored by any of major browsers
 	}))
 }
-
-var (
-	allowedOrigins = []string{in.LocalhostCRA, in.LocalhostVite, in.LocalhostVite2, in.GithubPages, in.GithubPages1, in.GithubPages2}
-	allowedMethods = []string{"GET", "POST", "OPTIONS", "DELETE", "PUT"}
-	allowedHeaders = []string{"Access-Control-Allow-Methods", "Access-Control-Allow-Origin", "X-Requested-With", "Authorization", "Content-Type", "X-Requested-With", "Bearer", "Origin"}
-)

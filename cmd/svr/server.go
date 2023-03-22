@@ -40,13 +40,10 @@ func listenAndServe(addr string, handler http.Handler) error {
 		case <-ctx.Done():
 			return ctx.Err()
 		}
-
 		log.Infoln(shutdownStarted)
-
 		if err := srv.Shutdown(ctx); err != nil {
 			return err
 		}
-
 		log.Infoln(shutdownCompleted)
 
 		return nil
@@ -67,9 +64,8 @@ func listenAndServe(addr string, handler http.Handler) error {
 }
 
 const (
-	SIGINTMessage  = "SIGINT received (Control-C ?)"
-	SIGTERMMessage = "SIGTERM received (Deployment shutdown?)"
-
+	SIGINTMessage     = "SIGINT received (Control-C ?)"
+	SIGTERMMessage    = "SIGTERM received (Deployment shutdown?)"
 	shutdownStarted   = "graceful shutdown..."
 	shutdownCompleted = "graceful shutdown complete"
 	fifteen           = 15 * time.Second

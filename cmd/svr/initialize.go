@@ -7,6 +7,10 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+func init() {
+	log.Infoln("initializing...")
+}
+
 type InitializerI interface {
 	Router(cfg *config.Config, svc *facade.Service) error
 	Database(cfg *config.Config, svc *facade.Service) error
