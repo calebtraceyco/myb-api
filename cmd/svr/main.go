@@ -2,6 +2,8 @@ package main
 
 import (
 	"github.com/NYTimes/gziphandler"
+	config "github.com/calebtracey/config-yaml"
+	"github.com/calebtracey/mind-your-business-api/internal/facade"
 	"github.com/calebtracey/mind-your-business-api/internal/routes"
 	log "github.com/sirupsen/logrus"
 )
@@ -9,19 +11,21 @@ import (
 const configPath = "dev_config.yaml"
 
 func main() {
+	defer panicQuit()
+	log.Infoln("initializing...")
+	appConfig := config.New(configPath)
+	appService := facade.Service{}
 
-	if initErrs != nil {
-		log.Error(initErrs)
+	if err := initializeDatabase(appConfig, &appService); err != nil {
+		log.Errorf("failed to initialize database: %s", err)
 		panicQuit()
-
-	} else {
-
-		log.Fatal(listenAndServe(Port, gziphandler.GzipHandler(
-			corsHandler().Handler(
-				routes.Handler{Service: appService}.Routes(),
-			)),
-		))
 	}
+
+	log.Fatal(listenAndServe(appConfig.Port.Value, gziphandler.GzipHandler(
+		corsHandler().Handler(
+			routes.Handler{Service: appService}.Routes(),
+		)),
+	))
 }
 
 func panicQuit() {

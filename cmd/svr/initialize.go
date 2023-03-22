@@ -3,31 +3,20 @@ package main
 import (
 	config "github.com/calebtracey/config-yaml"
 	"github.com/calebtracey/mind-your-business-api/internal/facade"
-	log "github.com/sirupsen/logrus"
 )
 
-var (
-	appConfig  *config.Config
-	appService facade.Service
-	initErrs   []error
-	Port       string
-)
+//var (
+//	initErrs []error
+//	Port     string
+//)
 
-func init() {
-	log.Infoln("=== initializing...")
-	appConfig = config.New(configPath)
-	appService = facade.Service{}
-	Port = appConfig.Port.Value
-
-	initializeDatabase()
-}
-
-func initializeDatabase() {
-	if psqlService, err := appConfig.Database(PostgresDB); err != nil {
-		initErrs = append(initErrs, err)
-	} else {
-		appService.Db = psqlService.DB
+func initializeDatabase(cfg *config.Config, svc *facade.Service) error {
+	psqlService, err := cfg.Database(PostgresDB)
+	if err != nil {
+		return err
 	}
+	svc.Db = psqlService.DB
+	return nil
 }
 
 const PostgresDB = "PSQL"
