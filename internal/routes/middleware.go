@@ -1,7 +1,6 @@
 package routes
 
 import (
-	in "github.com/calebtracey/mind-your-business-api/internal"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
@@ -23,10 +22,20 @@ func setMiddleware(r *chi.Mux) {
 	// processing should be stopped.
 	r.Use(middleware.Timeout(60 * time.Second))
 	r.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{in.LocalhostSwagger, in.LocalhostCRA, in.LocalhostVite, in.LocalhostVite2, in.GithubPages, in.GithubPages1, in.GithubPages2},
+		AllowedOrigins:   []string{LocalhostSwagger, LocalhostCRA, LocalhostVite, LocalhostVite2, GithubPages, GithubPages1, GithubPages2},
 		AllowedMethods:   []string{http.MethodGet, http.MethodPost, http.MethodOptions, http.MethodDelete, http.MethodPut},
 		AllowedHeaders:   []string{"Access-Control-Allow-Methods", "Access-Control-Allow-Origin", "X-Requested-With", "Authorization", "Content-Type", "X-Requested-With", "Bearer", "Origin"},
 		AllowCredentials: true,
 		MaxAge:           300, // Maximum value not ignored by any of major browsers
 	}))
 }
+
+const (
+	LocalhostSwagger = "http://localhost:6080/swagger/"
+	LocalhostCRA     = "http://localhost:3000"
+	LocalhostVite    = "http://localhost:5173"
+	LocalhostVite2   = "http://localhost:5173/robot-image-ui/"
+	GithubPages      = "https://calebtracey.github.io/robot-image-ui"
+	GithubPages1     = "https://calebtracey.github.io"
+	GithubPages2     = "https://calebtracey.github.io/robot-image-ui/"
+)

@@ -1,12 +1,17 @@
+name: Push Image
+
 on:
   push:
-    branches: ['main']
-name: Push Image
+    branches: [ "main" ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ "main" ]
+
 jobs:
   push-image:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag myb-api:$(date +%s)
       - name: Publish to Registry
