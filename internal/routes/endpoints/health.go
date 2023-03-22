@@ -6,7 +6,8 @@ import (
 	"time"
 )
 
-// Health godoc
+// Health route handler for /health endpoint
+//
 // @Summary      Health check endpoint
 // @Description  request to check for 200 response
 // @Tags         util

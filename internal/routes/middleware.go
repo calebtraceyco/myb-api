@@ -35,7 +35,7 @@ func setMiddleware(r *chi.Mux) {
 }
 
 var (
-	allowedOrigins = []string{in.LocalhostCRA, in.LocalhostVite, in.LocalhostVite2, in.GithubPages, in.GithubPages1, in.GithubPages2}
+	allowedOrigins = []string{in.LocalhostSwagger, in.LocalhostCRA, in.LocalhostVite, in.LocalhostVite2, in.GithubPages, in.GithubPages1, in.GithubPages2}
 	allowedMethods = []string{"GET", "POST", "OPTIONS", "DELETE", "PUT"}
 	allowedHeaders = []string{"Access-Control-Allow-Methods", "Access-Control-Allow-Origin", "X-Requested-With", "Authorization", "Content-Type", "X-Requested-With", "Bearer", "Origin"}
 )
