@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/rs/cors"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/sync/errgroup"
 	"net/http"
@@ -67,31 +66,16 @@ func listenAndServe(addr string, handler http.Handler) error {
 	return nil
 }
 
-func corsHandler() *cors.Cors {
-	return cors.New(cors.Options{
-		AllowedOrigins:   allowedOrigins,
-		AllowCredentials: true,
-		AllowedMethods:   allowedMethods,
-		AllowedHeaders:   allowedHeaders,
-		// Enable Debugging for testing, consider disabling in production
-		Debug: false,
-	})
-}
-
-var (
-	allowedOrigins = []string{localhostCRA, localhostVite, localhostVite2, githubPages, githubPages1, githubPages2}
-	allowedMethods = []string{"GET", "POST", "OPTIONS", "DELETE", "PUT"}
-	allowedHeaders = []string{"Access-Control-Allow-Methods", "Access-Control-Allow-Origin", "X-Requested-With", "Authorization", "Content-Type", "X-Requested-With", "Bearer", "Origin"}
-)
-
-const (
-	localhostCRA   = "http://localhost:3000"
-	localhostVite  = "http://localhost:5173"
-	localhostVite2 = "http://localhost:5173/robot-image-ui/"
-	githubPages    = "https://calebtracey.github.io/robot-image-ui"
-	githubPages1   = "https://calebtracey.github.io"
-	githubPages2   = "https://calebtracey.github.io/robot-image-ui/"
-)
+//func CorsHandler() *cors.Cors {
+//	return cors.New(cors.Options{
+//		AllowedOrigins:   allowedOrigins,
+//		AllowCredentials: true,
+//		AllowedMethods:   allowedMethods,
+//		AllowedHeaders:   allowedHeaders,
+//		// Enable Debugging for testing, consider disabling in production
+//		Debug: false,
+//	})
+//}
 
 const (
 	SIGINTMessage  = "SIGINT received (Control-C ?)"
