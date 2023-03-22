@@ -66,17 +66,6 @@ func listenAndServe(addr string, handler http.Handler) error {
 	return nil
 }
 
-//func CorsHandler() *cors.Cors {
-//	return cors.New(cors.Options{
-//		AllowedOrigins:   allowedOrigins,
-//		AllowCredentials: true,
-//		AllowedMethods:   allowedMethods,
-//		AllowedHeaders:   allowedHeaders,
-//		// Enable Debugging for testing, consider disabling in production
-//		Debug: false,
-//	})
-//}
-
 const (
 	SIGINTMessage  = "SIGINT received (Control-C ?)"
 	SIGTERMMessage = "SIGTERM received (Deployment shutdown?)"

@@ -10,22 +10,25 @@ import (
 
 const configPath = "dev_config.yaml"
 
+func init() {
+	log.Infoln("initializing...")
+}
+
 func main() {
 	defer panicQuit()
-	log.Infoln("initializing...")
-	appConfig := config.New(configPath)
-	appService := facade.Service{}
 
-	if err := initializeDatabase(appConfig, &appService); err != nil {
+	appConfig := config.New(configPath)
+	appService := new(facade.Service)
+
+	if err := initializeDatabase(appConfig, appService); err != nil {
 		log.Errorf("failed to initialize database: %s", err)
 		panicQuit()
 	}
 
 	log.Fatal(listenAndServe(appConfig.Port.Value, gziphandler.GzipHandler(
-		corsHandler().Handler(
-			routes.Handler{Service: appService}.Routes(),
-		)),
-	))
+		routes.Handler{Service: appService}.Routes(),
+	)),
+	)
 }
 
 func panicQuit() {

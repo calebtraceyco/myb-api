@@ -35,7 +35,6 @@ func (h Handler) newUser() http.HandlerFunc {
 		} else {
 			_, _ = w.Write([]byte("{message: user added successfully}"))
 			w.WriteHeader(200)
-
 		}
 
 	}
