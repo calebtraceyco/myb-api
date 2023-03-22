@@ -1,1 +1,1 @@
-GET https://{{LOCAL_URL}}/
+GET http://{{LOCAL_URL}}/health

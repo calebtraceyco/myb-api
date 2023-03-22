@@ -1,6 +1,6 @@
 Env: "Dev"
 Port: 6080
-AppName: "mind-your-business-db"
+AppName: "mind-your-business-api"
 ComponentConfigs:
   Client:
     Timeout: 15

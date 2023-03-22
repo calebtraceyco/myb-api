@@ -4,9 +4,21 @@ import (
 	config "github.com/calebtracey/config-yaml"
 	"github.com/calebtracey/mind-your-business-api/internal/dao/psql"
 	"github.com/calebtracey/mind-your-business-api/internal/facade"
+	log "github.com/sirupsen/logrus"
 )
 
-func initializeDatabase(cfg *config.Config, svc *facade.Service) error {
+type InitializerI interface {
+	Router(cfg *config.Config, svc *facade.Service) error
+	Database(cfg *config.Config, svc *facade.Service) error
+}
+type Initializer struct{}
+
+func (i *Initializer) Router(cfg *config.Config, svc *facade.Service) error {
+	log.Infoln("Router...")
+	return nil
+}
+
+func (i *Initializer) Database(cfg *config.Config, svc *facade.Service) error {
 	if psqlService, err := cfg.Database(PostgresDB); err != nil {
 		return err
 	} else {
