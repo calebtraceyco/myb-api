@@ -13,14 +13,11 @@ func main() {
 	if initErrs != nil {
 		log.Error(initErrs)
 		panicQuit()
-
 	} else {
-
 		log.Fatal(listenAndServe(Port, gziphandler.GzipHandler(
-			corsHandler().Handler(
-				routes.Handler{Service: appService}.Routes(),
-			)),
-		))
+			routes.Handler{Service: appService}.Routes(),
+		)),
+		)
 	}
 }
 
