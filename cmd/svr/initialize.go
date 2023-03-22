@@ -26,7 +26,7 @@ func (i *Initializer) Database(cfg *config.Config, svc *facade.Service) error {
 	if psqlService, err := cfg.Database(PostgresDB); err != nil {
 		return err
 	} else {
-		svc.PSQL = psql.DAO{Db: psqlService.DB}
+		svc.PSQL = psql.DAO{Pool: psqlService.Pool}
 	}
 	return nil
 }

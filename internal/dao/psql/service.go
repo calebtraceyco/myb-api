@@ -2,7 +2,7 @@ package psql
 
 import (
 	"context"
-	"database/sql"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type DAOI interface {
@@ -10,11 +10,11 @@ type DAOI interface {
 }
 
 type DAO struct {
-	Db *sql.DB
+	Pool *pgxpool.Pool
 }
 
 func (s DAO) ExecContext(ctx context.Context, exec string) (resp any, err error) {
-	if resp, err = s.Db.ExecContext(ctx, exec); err != nil {
+	if resp, err = s.Pool.Exec(ctx, exec); err != nil {
 		return nil, err
 	}
 
