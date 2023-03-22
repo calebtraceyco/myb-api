@@ -1,6 +1,6 @@
-Env: "Local"
+Env: "Dev"
 Port: 6080
-AppName: "go-gql-api"
+AppName: "mind-your-business-db"
 ComponentConfigs:
   Client:
     Timeout: 15
@@ -11,8 +11,9 @@ ComponentConfigs:
     InsecureSkipVerify: 1
 Databases:
   - Name: "PSQL"
-    Database: "rugby_db"
-    Server: "localhost:5432"
-    Username: "calebtracey"
+    Database: "postgres"
+    Server: "db.jsbmdtfxmaullqzhyokq.supabase.co:5432"
+    Username: "postgres"
     Scheme: "postgres"
-    PasswordEnvVariable: "DB_PASSWORD_LOCAL"
+    AuthRequired: "true"
+    AuthEnvironmentVariable: "DB_PASSWORD_DEV"

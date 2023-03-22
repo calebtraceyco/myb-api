@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/calebtracey/mind-your-business/internal/facade"
+	"github.com/calebtracey/mind-your-business-api/internal/facade"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"net/http"
@@ -13,7 +13,7 @@ type Handler struct {
 
 func (h Handler) Routes() *chi.Mux {
 	r := chi.NewRouter()
-	r.Use(middleware.RequestID, middleware.Logger, middleware.Recoverer, middleware.URLFormat)
+	r.Use(middleware.Logger)
 
 	r.Get("/", handler())
 	return r

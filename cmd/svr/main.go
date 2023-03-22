@@ -2,27 +2,24 @@ package main
 
 import (
 	"github.com/NYTimes/gziphandler"
-	config "github.com/calebtracey/config-yaml"
-	"github.com/calebtracey/mind-your-business/internal/routes"
+	"github.com/calebtracey/mind-your-business-api/internal/routes"
 	log "github.com/sirupsen/logrus"
 )
 
-const configPath = "local_config.yaml"
+const configPath = "dev_config.yaml"
 
 func main() {
-	log.Infoln("=== Initializing...")
 
-	if svc, errs := initializeDAO(config.New(configPath)); errs != nil {
-		log.Error(errs)
+	if initErrs != nil {
+		log.Error(initErrs)
 		panicQuit()
 
 	} else {
 
 		log.Fatal(listenAndServe("8080", gziphandler.GzipHandler(
 			corsHandler().Handler(
-				routes.Handler{
-					Service: svc,
-				}.Routes(),
+				routes.Handler{Service: service}.
+					Routes(),
 			)),
 		))
 	}
