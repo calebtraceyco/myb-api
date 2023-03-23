@@ -8,10 +8,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Go Test
-        uses: peter-evans/workflow-dispatch@v2
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#      - name: Go Test
+      - uses: peter-evans/workflow-dispatch@v2
         with:
           token: ${{ secrets.PAT }}
           repository: calebtraceyco/devops
@@ -20,10 +20,10 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Go Lint
-        uses: peter-evans/workflow-dispatch@v2
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#      - name: Go Lint
+      - uses: peter-evans/workflow-dispatch@v2
         with:
           token: ${{ secrets.PAT }}
           repository: calebtraceyco/devops
@@ -32,10 +32,10 @@ jobs:
   analyze:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-      - name: Analyze Code
-        uses: peter-evans/workflow-dispatch@v2
+#      - name: Checkout Code
+#        uses: actions/checkout@v3
+#      - name: Analyze Code
+      - uses: peter-evans/workflow-dispatch@v2
         with:
           token: ${{ secrets.PAT }}
           repository: calebtraceyco/devops
@@ -45,10 +45,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v3
-      - name: Build Image
-        uses: peter-evans/workflow-dispatch@v2
+#      - name: checkout
+#        uses: actions/checkout@v3
+#      - name: Build Image
+      - uses: peter-evans/workflow-dispatch@v2
         with:
           token: ${{ secrets.PAT }}
           repository: calebtraceyco/devops
@@ -59,10 +59,10 @@ jobs:
   push:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v3
-      - name: Push Image
-        uses: peter-evans/workflow-dispatch@v2
+#      - name: checkout
+#        uses: actions/checkout@v3
+#      - name: Push Image
+      - uses: peter-evans/workflow-dispatch@v2
         with:
           token: ${{ secrets.PAT }}
           repository: calebtraceyco/devops
