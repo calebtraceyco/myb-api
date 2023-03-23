@@ -1,4 +1,4 @@
-module github.com/calebtracey/mind-your-business-api
+module github.com/calebtraceyco/mind-your-business-api
 
 go 1.20
 

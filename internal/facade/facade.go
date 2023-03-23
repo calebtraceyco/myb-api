@@ -2,7 +2,7 @@ package facade
 
 import (
 	"context"
-	"github.com/calebtracey/mind-your-business-api/internal/dao/psql"
+	"github.com/calebtraceyco/mind-your-business-api/internal/dao/psql"
 )
 
 type ServiceI interface {
