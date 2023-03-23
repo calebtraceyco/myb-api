@@ -1,3 +1,4 @@
+name: MYB-API CI Pipeline
 on:
   workflow_run:
     workflows:
