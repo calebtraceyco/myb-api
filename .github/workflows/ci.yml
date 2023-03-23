@@ -29,7 +29,7 @@ jobs:
           repository: calebtraceyco/devops
           workflow: lint.yml
           ref: main
-  analysis:
+  analyze:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
