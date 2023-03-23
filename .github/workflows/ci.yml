@@ -8,8 +8,10 @@ on:
     types:
       - completed
 jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
   import:
     runs-on: ubuntu-latest
     uses: calebtraceyco/devops/.github/workflows/goAPI.yml@v1
-    steps:
-      - uses: actions/checkout@v2
