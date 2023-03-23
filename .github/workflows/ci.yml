@@ -11,64 +11,50 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v3
-      - name: Go Test
-        uses: peter-evans/workflow-dispatch@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
         with:
-          token: ${{ secrets.PAT }}
-          repository: calebtraceyco/devops
-          workflow: test.yml
-          ref: main
-  lint:
+          go-version: latest
+      - name: Build
+        run: go build -v ./...
+      - name: Test
+        run: go test -v ./...
+#        with:
+#          token: ${{ secrets.PAT }}
+#          repository: calebtraceyco/devops
+#          workflow: test.yml
+#          ref: main
+  lint-and-analyze:
     runs-on: ubuntu-latest
     steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v3
-      - name: Go Lint
-        uses: peter-evans/workflow-dispatch@v2
+      - uses: actions/checkout@v2
+      - uses: golangci/golangci-lint-action@v3
         with:
-          token: ${{ secrets.PAT }}
-          repository: calebtraceyco/devops
-          workflow: lint.yml
-          ref: main
-  analyze:
-    runs-on: ubuntu-latest
-    steps:
-#      - name: Checkout Code
-#        uses: actions/checkout@v3
-      - name: Analyze Code
-        uses: peter-evans/workflow-dispatch@v2
+          version: latest
+      - uses: github/codeql-action/analyze@v2
         with:
-          token: ${{ secrets.PAT }}
-          repository: calebtraceyco/devops
-          workflow: codeql.yml
-          ref: main
+          languages: go
+          queries: codeql-go
   # BUILD STAGE
-  build:
-    runs-on: ubuntu-latest
-    steps:
-#      - name: checkout
-#        uses: actions/checkout@v3
-      - name: Build Image
-        uses: peter-evans/workflow-dispatch@v2
-        with:
-          token: ${{ secrets.PAT }}
-          repository: calebtraceyco/devops
-          workflow: build.yml
-          ref: main
-    needs: [ test, lint, analyze ]
+#  build:
+#    runs-on: ubuntu-latest
+#    steps:
+##      - name: checkout
+#      - uses: actions/checkout@v3
+##      - name: Build Image
+##        uses: peter-evans/workflow-dispatch@v2
+#        with:
+#          token: ${{ secrets.PAT }}
+#          repository: calebtraceyco/devops
+#          workflow: build.yml
+#          ref: main
+#    needs: [ test, lint, analyze ]
   # PUSH IMAGE STAGE
   push:
     runs-on: ubuntu-latest
     steps:
+      - run: echo "PUSHING IMAGE..."
 #      - name: checkout
 #        uses: actions/checkout@v3
-      - name: Push Image
-        uses: peter-evans/workflow-dispatch@v2
-        with:
-          token: ${{ secrets.PAT }}
-          repository: calebtraceyco/devops
-          workflow: push.yml
-          ref: main
-    needs: build
+
+    needs: [ test, lint, analyze ]
