@@ -1,9 +1,9 @@
 name: Go API Workflow
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -54,7 +54,7 @@ jobs:
           repository: calebtraceyco/devops
           workflow: build.yml
           ref: main
-        needs: [ test, lint, analyze ]
+    needs: [ test, lint, analyze ]
   # PUSH IMAGE STAGE
   push:
     runs-on: ubuntu-latest
@@ -68,4 +68,4 @@ jobs:
           repository: calebtraceyco/devops
           workflow: push.yml
           ref: main
-        needs: build
+    needs: build
