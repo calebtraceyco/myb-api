@@ -30,4 +30,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "PUSHING IMAGE..."
-    needs: [ test, lint, analyze ]
+    needs: [ test, lint-and-analyze ]
