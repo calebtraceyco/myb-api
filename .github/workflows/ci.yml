@@ -1,11 +1,12 @@
-name: Go API Workflow
 on:
-  repository_dispatch:
-  workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ $default-branch ]
   pull_request:
-    branches: [ main ]
+    branches: [ $default-branch ]
+
+env:
+  default-branch: main
+  go-versions: 1.16, 1.17
 jobs:
   test:
     runs-on: ubuntu-latest
