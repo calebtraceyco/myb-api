@@ -12,4 +12,5 @@ jobs:
     runs-on: ubuntu-latest
     uses: calebtraceyco/devops/.github/workflows/import-workflow@main
   checkout:
+    runs-on: ubuntu-latest
     uses: actions/checkout@v3
