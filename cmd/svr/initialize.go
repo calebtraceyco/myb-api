@@ -2,8 +2,8 @@ package main
 
 import (
 	config "github.com/calebtracey/config-yaml"
-	"github.com/calebtracey/mind-your-business-api/internal/dao/psql"
-	"github.com/calebtracey/mind-your-business-api/internal/facade"
+	"github.com/calebtraceyco/mind-your-business-api/internal/dao/psql"
+	"github.com/calebtraceyco/mind-your-business-api/internal/facade"
 	log "github.com/sirupsen/logrus"
 )
 

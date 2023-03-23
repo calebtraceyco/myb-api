@@ -3,9 +3,9 @@ package main
 import (
 	"github.com/NYTimes/gziphandler"
 	config "github.com/calebtracey/config-yaml"
-	"github.com/calebtracey/mind-your-business-api/internal/facade"
-	"github.com/calebtracey/mind-your-business-api/internal/routes"
-	"github.com/calebtracey/mind-your-business-api/internal/routes/endpoints"
+	"github.com/calebtraceyco/mind-your-business-api/internal/facade"
+	"github.com/calebtraceyco/mind-your-business-api/internal/routes"
+	"github.com/calebtraceyco/mind-your-business-api/internal/routes/endpoints"
 	log "github.com/sirupsen/logrus"
 )
 

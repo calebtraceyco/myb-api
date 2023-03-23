@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/calebtracey/mind-your-business-api/internal/routes/endpoints"
+	"github.com/calebtraceyco/mind-your-business-api/internal/routes/endpoints"
 	"github.com/go-chi/chi/v5"
 	"github.com/swaggo/http-swagger"
 	_ "github.com/swaggo/http-swagger/example/go-chi/docs"
