@@ -1,0 +1,15 @@
+on:
+  workflow_run:
+    workflows:
+      - "goAPI.yml"
+    branches:
+      - main
+    types:
+      - completed
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run imported workflow
+        uses: calebtraceyco/devops/.github/workflows/import-workflow@main

@@ -1,7 +1,7 @@
 package endpoints
 
 import (
-	"github.com/calebtracey/mind-your-business-api/internal/facade"
+	"github.com/calebtraceyco/mind-your-business-api/internal/facade"
 	"net/http"
 )
 
