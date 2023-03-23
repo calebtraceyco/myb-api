@@ -8,9 +8,9 @@ on:
     types:
       - completed
 jobs:
-  import:
-    runs-on: ubuntu-latest
-    uses: calebtraceyco/devops/.github/workflows/goAPI.yml@main
   checkout:
     runs-on: ubuntu-latest
     uses: actions/checkout@v3
+  workflow:
+    runs-on: ubuntu-latest
+    uses: calebtraceyco/devops/.github/workflows/goAPI.yml@main
