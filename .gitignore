@@ -1,3 +1,4 @@
 /.idea/
 /cmd/svr/.env
 /gen/
+/cmd/svr/dev.env

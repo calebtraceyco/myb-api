@@ -11,22 +11,14 @@ func init() {
 	log.Infoln("initializing...")
 }
 
-type InitializerI interface {
-	Router(cfg *config.Config, svc *facade.Service) error
-	Database(cfg *config.Config, svc *facade.Service) error
-}
-type Initializer struct{}
+type source struct{}
 
-func (i *Initializer) Router(cfg *config.Config, svc *facade.Service) error {
-	log.Infoln("Router...")
-	return nil
-}
-
-func (i *Initializer) Database(cfg *config.Config, svc *facade.Service) error {
+func (src source) Database(cfg *config.Config, svc *facade.Service) error {
 	if psqlService, err := cfg.Database(PostgresDB); err != nil {
 		return err
 	} else {
 		svc.PSQL = psql.DAO{Pool: psqlService.Pool}
+
 	}
 	return nil
 }
