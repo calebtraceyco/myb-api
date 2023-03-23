@@ -12,8 +12,8 @@ jobs:
     steps:
 #      - name: Checkout code
 #        uses: actions/checkout@v3
-#      - name: Go Test
-      - uses: peter-evans/workflow-dispatch@v2
+      - name: Go Test
+        uses: peter-evans/workflow-dispatch@v2
         with:
           token: ${{ secrets.PAT }}
           repository: calebtraceyco/devops
@@ -24,8 +24,8 @@ jobs:
     steps:
 #      - name: Checkout code
 #        uses: actions/checkout@v3
-#      - name: Go Lint
-      - uses: peter-evans/workflow-dispatch@v2
+      - name: Go Lint
+        uses: peter-evans/workflow-dispatch@v2
         with:
           token: ${{ secrets.PAT }}
           repository: calebtraceyco/devops
@@ -36,8 +36,8 @@ jobs:
     steps:
 #      - name: Checkout Code
 #        uses: actions/checkout@v3
-#      - name: Analyze Code
-      - uses: peter-evans/workflow-dispatch@v2
+      - name: Analyze Code
+        uses: peter-evans/workflow-dispatch@v2
         with:
           token: ${{ secrets.PAT }}
           repository: calebtraceyco/devops
@@ -49,8 +49,8 @@ jobs:
     steps:
 #      - name: checkout
 #        uses: actions/checkout@v3
-#      - name: Build Image
-      - uses: peter-evans/workflow-dispatch@v2
+      - name: Build Image
+        uses: peter-evans/workflow-dispatch@v2
         with:
           token: ${{ secrets.PAT }}
           repository: calebtraceyco/devops
@@ -63,8 +63,8 @@ jobs:
     steps:
 #      - name: checkout
 #        uses: actions/checkout@v3
-#      - name: Push Image
-      - uses: peter-evans/workflow-dispatch@v2
+      - name: Push Image
+        uses: peter-evans/workflow-dispatch@v2
         with:
           token: ${{ secrets.PAT }}
           repository: calebtraceyco/devops
