@@ -26,8 +26,25 @@ jobs:
         with:
           languages: go
           queries: codeql-go
-  push:
+  build-image:
+    name: Build Image
     runs-on: ubuntu-latest
     steps:
-      - run: echo "PUSHING IMAGE..."
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag myb-api:$(date +%s)
     needs: [ test, lint-and-analyze ]
+  push-image:
+    name: Docker Push Image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag myb-api:$(date +%s)
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: calebtracey/myb-api
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+    needs: [ build-image ]
