@@ -3,7 +3,6 @@ on:
     branches: [ $default-branch ]
   pull_request:
     branches: [ $default-branch ]
-
 env:
   default-branch: main
   go-versions: 1.16, 1.17
