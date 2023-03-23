@@ -10,6 +10,6 @@ on:
 jobs:
   import:
     runs-on: ubuntu-latest
-    uses: calebtraceyco/devops/.github/workflows/goAPI@v1
+    uses: calebtraceyco/devops/.github/workflows/goAPI.yml@v1
     steps:
       - uses: actions/checkout@v2
