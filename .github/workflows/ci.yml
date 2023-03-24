@@ -2,9 +2,14 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
+    # workflow only runs for MYB-XXX merging into main
+    paths:
+      - 'refs/heads/MYB-*'
+      - 'refs/heads/main'
+    types: [ opened, synchronize ]
 jobs:
   test:
+    name: Go Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,6 +21,7 @@ jobs:
       - name: Test
         run: go test -v ./...
   lint:
+    name: Go Lint
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -32,6 +38,7 @@ jobs:
         with:
           version: latest
   analyze:
+    name: Analyze Code
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
