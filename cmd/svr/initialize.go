@@ -18,7 +18,6 @@ func (src source) Database(cfg *cfg.Config, svc *facade.Service) error {
 		return err
 	} else {
 		svc.PSQL = psql.DAO{Pool: psqlService.Pool}
-
 	}
 	return nil
 }

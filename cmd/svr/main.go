@@ -9,12 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const configPath = "dev_config.yaml"
-
-type Application struct {
-	Config *cfg.Config
-	Router endpoints.RouterI
-}
+const configPath = "config.yaml"
 
 //	@title			Mind Your Business API
 //	@version		1.0
@@ -48,7 +43,7 @@ func main() {
 		panicQuit()
 	}
 
-	log.Fatal(listenAndServe(config.Port.Value, gziphandler.GzipHandler(
+	log.Fatal(listenAndServe(config.Port, config.Env, gziphandler.GzipHandler(
 		routes.Handler{Router: &endpoints.Router{Service: service}}.RouteHandler(),
 	)),
 	)

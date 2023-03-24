@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/NYTimes/gziphandler v1.1.1
-	github.com/calebtraceyco/config v0.1.2
+	github.com/calebtraceyco/config v0.1.3
 	github.com/calebtraceyco/models v0.1.3
 	github.com/go-chi/chi/v5 v5.0.8
 	github.com/go-chi/cors v1.2.1
@@ -31,7 +31,7 @@ require (
 	github.com/gocolly/colly v1.2.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
-	github.com/imdario/mergo v0.3.14 // indirect
+	github.com/imdario/mergo v0.3.15 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
 	github.com/jackc/puddle/v2 v2.2.0 // indirect

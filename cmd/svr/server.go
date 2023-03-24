@@ -2,27 +2,32 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/sync/errgroup"
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 )
 
-func listenAndServe(addr string, handler http.Handler) error {
-	log.Infof("server UP and listening on PORT: %s", addr)
+func listenAndServe(addr, env string, handler http.Handler) error {
+	// TODO implement tlsConfig for HTTPS
+	var tlsConfig *tls.Config
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%s", addr),
 		Handler:      handler,
 		WriteTimeout: fifteen,
 		ReadTimeout:  fifteen,
+		TLSConfig:    tlsConfig,
 	}
 
 	signals := make(chan os.Signal, 1)
+	log.Infof("%s | listening on PORT: %s", strings.ToUpper(env), addr)
 	signal.Notify(signals, os.Interrupt, syscall.SIGTERM)
 
 	g, ctx := errgroup.WithContext(context.Background())
@@ -40,8 +45,13 @@ func listenAndServe(addr string, handler http.Handler) error {
 		case <-ctx.Done():
 			return ctx.Err()
 		}
+
 		log.Infoln(shutdownStarted)
-		if err := srv.Shutdown(ctx); err != nil {
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), maxShutdownTime)
+		defer cancel()
+
+		if err := srv.Shutdown(shutdownCtx); err != nil {
+			log.Errorf("Graceful shutdown error: %v", err)
 			return err
 		}
 		log.Infoln(shutdownCompleted)
@@ -55,9 +65,7 @@ func listenAndServe(addr string, handler http.Handler) error {
 
 	if err := g.Wait(); err != nil {
 		log.Error(err)
-		err = fmt.Errorf("listenAndServe: %w", err)
-
-		return err
+		return fmt.Errorf("listenAndServe: %w", err)
 	}
 
 	return nil
@@ -69,4 +77,5 @@ const (
 	shutdownStarted   = "graceful shutdown..."
 	shutdownCompleted = "graceful shutdown complete"
 	fifteen           = 15 * time.Second
+	maxShutdownTime   = 10 * time.Second
 )
