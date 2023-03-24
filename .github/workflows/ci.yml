@@ -49,9 +49,11 @@ jobs:
         uses: github/codeql-action/init@v2
         with:
           languages: go
+          repository: ${{ github.repository}}
       - name: Analyze Code
         uses: github/codeql-action/analyze@v2
         with:
+          repository: ${{ github.repository }}
           languages: go
           queries: codeql-go
   build-image:
