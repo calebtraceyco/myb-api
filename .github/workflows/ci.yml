@@ -68,26 +68,26 @@ jobs:
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
           docker build -t ghcr.io/${{ github.repository }}:${{ github.sha }} .
-          docker push ghcr.io/${{ github.repository }}:${{ github.sha }}
 #        run: docker build . --file Dockerfile --tag myb-api:$(date +%s)
     needs: [ tests, lint, analyze ]
   push-image:
-    name: Docker Push Image
+    name: Push Image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Build and tag Docker image
+      - name: Build and Tag Image
         run: |
-          docker build -t my-image .
-          docker tag my-image ghcr.io/my-org/my-image:latest
+          docker build -t myb-api .
+          docker tag myb-api ghcr.io/${{ github.repository }}:latest
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push Docker image to GitHub Container Registry
-        run: docker push ghcr.io/my-org/my-image:latest
+#        run: docker push ghcr.io/my-org/my-image:latest
+        run: docker push ghcr.io/${{ github.repository }}:latest
     needs: [ build-image ]
