@@ -1,12 +1,13 @@
 on:
+  # workflow only runs for MYB-XXX merging into main
   push:
-    branches: [ main ]
+    branches:
+      - MYB-*
   pull_request:
-    # workflow only runs for MYB-XXX merging into main
-    paths:
-      - 'refs/heads/MYB-*'
-      - 'refs/heads/main'
+    branches:
+      - main
     types: [ opened, synchronize ]
+
 jobs:
   test:
     name: Go Test
