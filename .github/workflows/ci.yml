@@ -3,9 +3,11 @@ on:
   push:
     branches:
       - MYB-*
+      - main
   pull_request:
     branches:
       - main
+      - MYB-*
     types: [ opened, synchronize ]
 
 jobs:
