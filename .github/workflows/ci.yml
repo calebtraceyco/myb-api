@@ -3,12 +3,10 @@ on:
     branches:
       - MYB-*
       - main
-  pull_request:
+  pull_request_target:
     branches:
       - main
       - MYB-*
-    types: [ opened, synchronize ]
-
 jobs:
   test:
     strategy:
