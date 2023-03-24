@@ -3,6 +3,7 @@ package psql
 import (
 	"github.com/calebtraceyco/mind-your-business-api/external"
 	"github.com/calebtraceyco/mind-your-business-api/external/models"
+	"github.com/calebtraceyco/mind-your-business-api/internal/dao/psql"
 	"github.com/jackc/pgx/v5/pgtype"
 	"testing"
 	"time"
@@ -37,7 +38,7 @@ func TestMapper_PostgresExec(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			m := Mapper{}
+			m := psql.Mapper{}
 			if got := m.NewUserExec(tt.request); got != tt.want {
 				t.Errorf("NewUserExec() = %v, want %v", got, tt.want)
 			}
