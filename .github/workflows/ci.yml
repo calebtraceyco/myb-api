@@ -51,7 +51,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag myb-api:$(date +%s)
-    needs: [ test, lint-and-analyze ]
+    needs: [ test, lint, analyze ]
   push-image:
     name: Docker Push Image
     runs-on: ubuntu-latest
