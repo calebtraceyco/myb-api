@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/NYTimes/gziphandler"
-	"github.com/calebtraceyco/config"
+	cfg "github.com/calebtraceyco/config"
 	"github.com/calebtraceyco/mind-your-business-api/internal/facade"
 	"github.com/calebtraceyco/mind-your-business-api/internal/routes"
 	"github.com/calebtraceyco/mind-your-business-api/internal/routes/endpoints"
@@ -12,7 +12,7 @@ import (
 const configPath = "dev_config.yaml"
 
 type Application struct {
-	Config *config.Config
+	Config *cfg.Config
 	Router endpoints.RouterI
 }
 
@@ -40,16 +40,16 @@ type Application struct {
 func main() {
 	defer panicQuit()
 
-	cfg := config.New(configPath)
-	svc := new(facade.Service)
+	config := cfg.New(configPath)
+	service := new(facade.Service)
 
-	if err := new(source).Database(cfg, svc); err != nil {
+	if err := new(source).Database(config, service); err != nil {
 		log.Errorf("failed to initialize database: %s", err)
 		panicQuit()
 	}
 
-	log.Fatal(listenAndServe(cfg.Port.Value, gziphandler.GzipHandler(
-		routes.Handler{Router: &endpoints.Router{Service: new(facade.Service)}}.RouteHandler(),
+	log.Fatal(listenAndServe(config.Port.Value, gziphandler.GzipHandler(
+		routes.Handler{Router: &endpoints.Router{Service: service}}.RouteHandler(),
 	)),
 	)
 }

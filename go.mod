@@ -4,7 +4,8 @@ go 1.20
 
 require (
 	github.com/NYTimes/gziphandler v1.1.1
-	github.com/calebtraceyco/config v0.1.1
+	github.com/calebtraceyco/config v0.1.2
+	github.com/calebtraceyco/models v0.1.3
 	github.com/go-chi/chi/v5 v5.0.8
 	github.com/go-chi/cors v1.2.1
 	github.com/jackc/pgx/v5 v5.3.1
@@ -40,7 +41,7 @@ require (
 	github.com/lib/pq v1.10.7 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/saintfish/chardet v0.0.0-20230101081208-5e3ef4b5456d // indirect
-	github.com/swaggo/files v0.0.0-20220610200504-28940afbdbfe // indirect
+	github.com/swaggo/files v1.0.1 // indirect
 	github.com/temoto/robotstxt v1.1.2 // indirect
 	golang.org/x/crypto v0.7.0 // indirect
 	golang.org/x/net v0.8.0 // indirect

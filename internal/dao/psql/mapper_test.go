@@ -9,8 +9,6 @@ import (
 )
 
 func TestMapper_PostgresExec(t *testing.T) {
-	type args struct {
-	}
 	tests := []struct {
 		name    string
 		request *external.ApiRequest
