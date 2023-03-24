@@ -9,12 +9,12 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 )
 
-func listenAndServe(addr string, handler http.Handler) error {
-	log.Infof("server UP and listening on PORT: %s", addr)
+func listenAndServe(addr, env string, handler http.Handler) error {
 	// TODO implement tlsConfig for HTTPS
 	var tlsConfig *tls.Config
 
@@ -27,6 +27,7 @@ func listenAndServe(addr string, handler http.Handler) error {
 	}
 
 	signals := make(chan os.Signal, 1)
+	log.Infof("%s | listening on PORT: %s", strings.ToUpper(env), addr)
 	signal.Notify(signals, os.Interrupt, syscall.SIGTERM)
 
 	g, ctx := errgroup.WithContext(context.Background())

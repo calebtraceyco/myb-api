@@ -1,6 +1,6 @@
-Env: "Dev"
+Env: Dev
 Port: 6080
-AppName: "myb-api"
+AppName: myb-api
 ComponentConfigs:
   Client:
     Timeout: 15
@@ -10,10 +10,11 @@ ComponentConfigs:
     DisableCompression: 2
     InsecureSkipVerify: 1
 Databases:
-  - Name: "PSQL"
-    Database: "postgres"
-    Server: "db.jsbmdtfxmaullqzhyokq.supabase.co:5432"
-    Username: "postgres"
-    Scheme: "postgres"
-    AuthRequired: "true"
-    AuthEnvironmentVariable: "DB_PASSWORD_DEV"
+  - Name: PSQL
+    Database: postgres
+    Server: db.jsbmdtfxmaullqzhyokq.supabase.co:5432
+    Port: 5432
+    Username: postgres
+    Scheme: postgres
+    AuthRequired: true
+    AuthEnvironmentVariable: DB_PASSWORD_DEV
