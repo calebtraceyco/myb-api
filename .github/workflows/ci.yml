@@ -1,11 +1,8 @@
 on:
   push:
-    branches:
-      - MYB-*
-      - main
+    branches: [ FEAT-*, $default-branch ]
   pull_request:
-    branches:
-      - main
+    branches: [ $default-branch ]
 jobs:
   tests:
     strategy:
