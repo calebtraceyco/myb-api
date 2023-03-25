@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/NYTimes/gziphandler"
 	cfg "github.com/calebtraceyco/config"
+	"github.com/calebtraceyco/http/server"
 	"github.com/calebtraceyco/mind-your-business-api/internal/facade"
 	"github.com/calebtraceyco/mind-your-business-api/internal/routes"
 	"github.com/calebtraceyco/mind-your-business-api/internal/routes/endpoints"
@@ -43,7 +44,7 @@ func main() {
 		panicQuit()
 	}
 
-	log.Fatal(listenAndServe(config.Port, config.Env, gziphandler.GzipHandler(
+	log.Fatal(server.ListenAndServe(config.Port, config.Env, gziphandler.GzipHandler(
 		routes.Handler{Router: &endpoints.Router{Service: service}}.RouteHandler(),
 	)),
 	)
