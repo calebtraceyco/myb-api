@@ -1,3 +1,20 @@
 {
-
+  "payload": {
+    "request": {
+      "user": {
+        "detail": {
+          "firstName": "trey",
+          "lastName": "antipasto",
+          "email": "trey.antipasto@fish.com",
+          "username": "trey123",
+          "address": {
+            "addr1": "123 drum st",
+            "city": "Burlington",
+            "state": "VT",
+            "isPrimary": "true"
+          }
+        }
+      }
+    }
+  }
 }

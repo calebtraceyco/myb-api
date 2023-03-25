@@ -3,7 +3,10 @@ package external
 import "github.com/calebtraceyco/mind-your-business-api/external/models"
 
 type ApiRequest struct {
-	Request Request `json:"request,omitempty"`
+	Payload struct {
+		Request  Request `json:"request,omitempty"`
+		Endpoint string  `json:"endpoint,omitempty"`
+	} `json:"payload"`
 }
 
 type Request struct {

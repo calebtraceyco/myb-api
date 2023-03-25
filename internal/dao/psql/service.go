@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/calebtraceyco/mind-your-business-api/external"
 	"github.com/jackc/pgx/v5/pgxpool"
+	log "github.com/sirupsen/logrus"
 	"reflect"
 	"strings"
 )
@@ -18,7 +19,7 @@ type DAO struct {
 
 func (s DAO) ExecContext(ctx context.Context, exec string) (resp *external.ExecResponse, err error) {
 	resp = new(external.ExecResponse)
-
+	log.Info(exec)
 	if resp.Status, err = s.Pool.Exec(ctx, exec); err != nil {
 		return nil, err
 	} else {

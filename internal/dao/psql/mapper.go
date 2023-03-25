@@ -14,7 +14,7 @@ type MapperI interface {
 type Mapper struct{}
 
 func (m Mapper) NewUserExec(request *external.ApiRequest) string {
-	columns, values := parseStructToSlices(request.Request.User)
+	columns, values := parseStructToSlices(request.Payload.Request.User)
 	return fmt.Sprintf(InsertExec, "users", strings.Join(columns, ", "), strings.Join(values, ", "))
 }
 

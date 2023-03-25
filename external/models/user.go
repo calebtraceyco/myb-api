@@ -1,19 +1,23 @@
 package models
 
 import (
+	"github.com/calebtraceyco/mind-your-business-api/external/models/userinfo"
 	"github.com/jackc/pgx/v5/pgtype"
 	"time"
 )
 
+type Users []User
+
 type User struct {
-	ID           pgtype.UUID `json:"id,omitempty" db:"id"`
-	FirstName    string      `json:"firstName,omitempty" db:"first_name"`
-	LastName     string      `json:"lastName,omitempty" db:"last_name"`
-	Email        string      `json:"email,omitempty"  db:"email"`
-	Username     string      `json:"username,omitempty"  db:"username"`
-	Password     string      `json:"password,omitempty"  db:"password"`
-	Token        string      `json:"token,omitempty"  db:"token"`
-	RefreshToken string      `json:"refreshToken,omitempty"  db:"refresh_Token"`
-	CreatedAt    time.Time   `json:"createdAt"  db:"created_at"`
-	UpdatedAt    time.Time   `json:"updatedAt"  db:"updated_at"`
+	ID     pgtype.UUID     `json:"id,omitempty" db:"id"`
+	Detail userinfo.Detail `json:"detail,omitempty" db:"detail"`
+
+	Emails    userinfo.Emails    `json:"emails,omitempty" db:"emails"`
+	Addresses userinfo.Addresses `json:"addresses,omitempty" db:"addresses"`
+	Contacts  userinfo.Contacts  `json:"contacts,omitempty" db:"contacts"`
+
+	Token        string    `json:"token,omitempty"  db:"token"`
+	RefreshToken string    `json:"refreshToken,omitempty"  db:"refresh_Token"`
+	CreatedAt    time.Time `json:"createdAt"  db:"created_at"`
+	UpdatedAt    time.Time `json:"updatedAt"  db:"updated_at"`
 }
