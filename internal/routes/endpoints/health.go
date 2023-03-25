@@ -20,7 +20,7 @@ import (
 // @Router       /health [post]
 func (r *Router) Health() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		log.WithTime(time.Now().Local()).Infoln("still alive?")
+		log.Traceln("=== Health Check === \n" + time.Now().Local().String())
 
 		w.WriteHeader(http.StatusOK)
 	}
