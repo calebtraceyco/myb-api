@@ -24,3 +24,5 @@ func (s DAO) AddUser(ctx context.Context, user *models.User) (resp *external.Exe
 
 	return resp, err
 }
+
+func (s DAO) GetUser(ctx context.Context) {}

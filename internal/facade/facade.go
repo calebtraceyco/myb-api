@@ -9,18 +9,20 @@ import (
 )
 
 type ServiceI interface {
-	UserResponse(ctx context.Context, apiRequest external.ApiRequest) (resp external.Response)
+	UserResponse(ctx context.Context, apiRequest external.ApiRequest) (resp *external.Response)
 }
 
 type Service struct {
 	UserDAO user.DAOI
 }
 
-func (s Service) UserResponse(ctx context.Context, apiRequest external.ApiRequest) (resp external.Response) {
-	resp = external.Response{}
+func (s Service) UserResponse(ctx context.Context, apiRequest external.ApiRequest) (resp *external.Response) {
+	resp = new(external.Response)
+	// TODO validation
 	if apiRequest.Payload.Request.User == nil {
 		panic("missing user from payload")
 	}
+
 	switch apiRequest.Payload.Endpoint {
 	case endpoints.NewUser:
 		log.Traceln("UserResponse: /newUser endpoint")
@@ -28,15 +30,13 @@ func (s Service) UserResponse(ctx context.Context, apiRequest external.ApiReques
 			resp.SetErrorLog([]error{err}, "UserResponse", "500")
 			return resp
 		} else {
-			return external.Response{Details: []any{daoResp}}
+			// TODO map user response
+			resp.Details = []any{daoResp}
 		}
 	default:
+		// TODO change to error and/or default call
+		// panic for debugging
 		panic("UserResponse: missing endpoint")
 	}
-
-	// TODO add request validation
-	// TODO parse params and map request query
-
-	// TODO add response mapping
 	return resp
 }

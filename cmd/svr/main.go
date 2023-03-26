@@ -45,7 +45,7 @@ func main() {
 	}
 
 	log.Fatal(server.ListenAndServe(config.Port, config.Env, gziphandler.GzipHandler(
-		routes.Handler{Router: &endpoints.Router{Service: service}}.RouteHandler(),
+		routes.Handler{Router: endpoints.Router{}}.RouteHandler(service),
 	)),
 	)
 }

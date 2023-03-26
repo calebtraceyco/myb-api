@@ -1,6 +1,7 @@
 package user
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/calebtraceyco/mind-your-business-api/external/models"
 	"github.com/calebtraceyco/mind-your-business-api/internal/dao/psql"
@@ -16,9 +17,9 @@ type MapperI interface {
 type Mapper struct{}
 
 func (m Mapper) MapUserExec(user *models.User) string {
-	cols, values := parseStructToSlices(user.Detail)
+	detailCols, detailValues := parseStructToSlices(user)
 
-	return fmt.Sprintf(psql.InsertExec, "users", strings.Join(cols, ", "), strings.Join(values, ", "))
+	return fmt.Sprintf(psql.InsertExec, "users", strings.Join(detailCols, ", "), strings.Join(detailValues, ", "))
 }
 
 func parseStructToSlices(obj any) ([]string, []string) {
@@ -34,23 +35,70 @@ func parseStructToSlices(obj any) ([]string, []string) {
 		field := v.Field(i)
 
 		if field.IsValid() {
-			tag := t.Field(i).Tag.Get(DatabaseStructTag)
-
-			switch field.Kind() {
-			case reflect.String:
-				if str := field.String(); str != "" {
-					tags = append(tags, tag)
-					values = append(values, wrapInSingleQuotes(field.String()))
+			if tag := t.Field(i).Tag.Get(DatabaseStructTag); tag != "" && !strings.EqualFold(tag, "id") {
+				switch field.Kind() {
+				case reflect.String:
+					if str := field.String(); str != "" {
+						tags = append(tags, tag)
+						values = append(values, wrapInSingleQuotes(field.String()))
+					}
+				case reflect.Struct:
+					if data, err := json.Marshal(field.Interface()); err == nil {
+						tags = append(tags, tag)
+						values = append(values, wrapInSingleQuotes(string(data)))
+					}
+					//t, v := parseStructToSlices(field)
+					log.Infof("Struct field missed from exec mapping: %s", tag)
+				default:
 				}
-			case reflect.Struct:
-				//t, v := parseStructToSlices(field)
-				log.Infof("Struct field missed from exec mapping: %s", tag)
-			default:
+			} else {
+				continue
 			}
 		}
 	}
 
 	return tags, values
+}
+
+func mapFields(request any, daoModel any) error {
+	requestValue := reflect.ValueOf(request).Elem()
+	daoModelValue := reflect.ValueOf(daoModel).Elem()
+
+	for i := 0; i < requestValue.NumField(); i++ {
+		requestField := requestValue.Field(i)
+		daoModelField := daoModelValue.FieldByName(requestValue.Type().Field(i).Name)
+
+		if daoModelField.IsValid() && daoModelField.CanSet() {
+			switch requestField.Kind() {
+			case reflect.String:
+				if str := requestField.String(); str != "" {
+					//tags = append(tags, tag)
+					//values = append(values, wrapInSingleQuotes(field.String()))
+				}
+			case reflect.Struct:
+
+				nestedModel := reflect.New(daoModelField.Type())
+				if err := mapFields(requestField.Addr().Interface(), nestedModel.Interface()); err != nil {
+					return err
+				}
+				daoModelField.Set(nestedModel.Elem())
+			default:
+				daoModelField.Set(requestField)
+			}
+		}
+
+		if requestField.Kind() == reflect.Struct {
+			nestedModel := reflect.New(daoModelField.Type())
+			if err := mapFields(requestField.Addr().Interface(), nestedModel.Interface()); err != nil {
+				return err
+			}
+			daoModelField.Set(nestedModel.Elem())
+		} else {
+			daoModelField.Set(requestField)
+		}
+	}
+
+	return nil
 }
 
 func dereferencePointer(obj any) any {
