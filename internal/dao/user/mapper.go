@@ -27,9 +27,6 @@ func (m Mapper) MapUserExec(user *models.User) (string, error) {
 }
 
 func parseStructToSlices(obj any) (string, string) {
-	//if reflect.ValueOf(obj).IsZero() {
-	//	panic("parseStructToSlices: " + MapUserExecError)
-	//}
 	var tags, values []string
 
 	obj = dereferencePointer(obj)
@@ -38,10 +35,11 @@ func parseStructToSlices(obj any) (string, string) {
 	numFields := t.NumField()
 
 	for i := 0; i < numFields; i++ {
-		// 'db' struct tag field = db column name
 		field := v.Field(i)
 		tag := t.Field(i).Tag.Get(DatabaseStructTag)
+
 		kind := field.Kind()
+
 		if field.IsValid() && tag != "" && !slices.Contains(excludedTags, tag) {
 			switch kind {
 			case reflect.String:
@@ -61,10 +59,8 @@ func parseStructToSlices(obj any) (string, string) {
 }
 
 func handleFieldString(field reflect.Value, tag string, tags, values []string) ([]string, []string) {
-	if fieldString, found := reflect.TypeOf(field).FieldByName(tag); found {
-		tags = append(tags, tag)
-		values = append(values, wrapInSingleQuotes(reflect.ValueOf(fieldString).String()))
-	}
+	tags = append(tags, tag)
+	values = append(values, wrapInSingleQuotes(field.String()))
 	return tags, values
 }
 

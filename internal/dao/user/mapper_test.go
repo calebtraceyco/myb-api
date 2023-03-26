@@ -15,8 +15,8 @@ func Test_parseStructToSlices(t *testing.T) {
 				Name string `json:"name,omitempty" db:"name"`
 				Job  string `json:"job,omitempty" db:"job"`
 			}{Name: "NAME", Job: "JOB"},
-			want:  "NAME",
-			want1: "JOB",
+			want:  "name, job",
+			want1: "'NAME', 'JOB'",
 		},
 	}
 	for _, tt := range tests {
