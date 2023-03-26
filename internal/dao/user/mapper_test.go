@@ -12,8 +12,8 @@ func Test_parseStructToSlices(t *testing.T) {
 		{
 			name: "Happy Path",
 			obj: struct {
-				Name string `json:"name,omitempty"`
-				Job  string `json:"job,omitempty"`
+				Name string `json:"name,omitempty" db:"name"`
+				Job  string `json:"job,omitempty" db:"job"`
 			}{Name: "NAME", Job: "JOB"},
 			want:  "NAME",
 			want1: "JOB",

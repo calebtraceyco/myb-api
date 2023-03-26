@@ -27,9 +27,9 @@ func (m Mapper) MapUserExec(user *models.User) (string, error) {
 }
 
 func parseStructToSlices(obj any) (string, string) {
-	if reflect.ValueOf(obj).IsZero() {
-		panic("parseStructToSlices: " + MapUserExecError)
-	}
+	//if reflect.ValueOf(obj).IsZero() {
+	//	panic("parseStructToSlices: " + MapUserExecError)
+	//}
 	var tags, values []string
 
 	obj = dereferencePointer(obj)
@@ -45,7 +45,7 @@ func parseStructToSlices(obj any) (string, string) {
 		if field.IsValid() && tag != "" && !slices.Contains(excludedTags, tag) {
 			switch kind {
 			case reflect.String:
-				tags, values = handleFieldString(v.FieldByName(reflect.TypeOf(field).Name()), tag, tags, values)
+				tags, values = handleFieldString(field, tag, tags, values)
 			case reflect.Struct:
 				tags, values = handleFieldStruct(field, tag, tags, values)
 			case reflect.Slice:
@@ -61,8 +61,10 @@ func parseStructToSlices(obj any) (string, string) {
 }
 
 func handleFieldString(field reflect.Value, tag string, tags, values []string) ([]string, []string) {
-	tags = append(tags, tag)
-	values = append(values, wrapInSingleQuotes(reflect.ValueOf(field).String()))
+	if fieldString, found := reflect.TypeOf(field).FieldByName(tag); found {
+		tags = append(tags, tag)
+		values = append(values, wrapInSingleQuotes(reflect.ValueOf(fieldString).String()))
+	}
 	return tags, values
 }
 
@@ -80,12 +82,13 @@ func handleFieldSlice(field reflect.Value, tag string, tags, values []string) ([
 	fieldType := reflect.TypeOf(field)
 
 	for i := 0; i < fieldType.NumField(); i++ {
-		subValue := reflect.ValueOf(field)
-		subField := subValue.Field(i)
+		subField := reflect.ValueOf(field)
+		subValue := subField.Field(i)
+
 		if subField.IsValid() {
 			switch subValue.Kind() {
 			case reflect.String:
-				values = append(values, wrapInSingleQuotes(subField.String()))
+				values = append(values, wrapInSingleQuotes(subValue.String()))
 			}
 		}
 	}
