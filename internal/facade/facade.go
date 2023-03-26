@@ -6,6 +6,7 @@ import (
 	"github.com/calebtraceyco/mind-your-business-api/external/endpoints"
 	"github.com/calebtraceyco/mind-your-business-api/internal/dao/user"
 	log "github.com/sirupsen/logrus"
+	"reflect"
 )
 
 type ServiceI interface {
@@ -22,6 +23,7 @@ func (s Service) UserResponse(ctx context.Context, apiRequest external.ApiReques
 	if apiRequest.Payload.Request.User == nil {
 		panic("missing user from payload")
 	}
+	log.Infoln(reflect.ValueOf(apiRequest))
 
 	switch apiRequest.Payload.Endpoint {
 	case endpoints.NewUser:

@@ -11,9 +11,26 @@
             "addr1": "123 drum st",
             "city": "Burlington",
             "state": "VT",
-            "isPrimary": "true"
+            "isPrimary": true
           }
-        }
+        },
+        "emails": [
+          {
+            "address": "trey.antipasto@fish.com",
+            "isPrimary": true
+          }
+        ],
+        "addresses": [
+          {
+            "addr1": "TEST",
+            "addr2": "TEST",
+            "city": "TEST",
+            "state": "TEST",
+            "zip": "TEST",
+            "isPrimary": true
+          }
+        ],
+        "contacts": [{}]
       }
     }
   }

@@ -29,7 +29,7 @@ func (r Router) NewUserHandler(service facade.ServiceI) http.HandlerFunc {
 		var apiResponse *external.Response
 
 		if err := json.NewDecoder(req.Body).Decode(&apiRequest); err != nil {
-			log.Errorf("NewUser: decode error: %v", err)
+			log.Errorf("NewUserHandler: decode error: %v", err)
 			rw.WriteHeader(400)
 			return
 		}
@@ -37,7 +37,7 @@ func (r Router) NewUserHandler(service facade.ServiceI) http.HandlerFunc {
 		apiRequest.Payload.Endpoint = endpoints.NewUser
 
 		if apiResponse = service.UserResponse(req.Context(), apiRequest); len(apiResponse.Message.ErrorLog) > 0 {
-			log.Errorf("/newUser - %v", apiResponse.Message.ErrorLog)
+			log.Errorf("NewUserHandler: \"/newUser\" - %v", apiResponse.Message.ErrorLog)
 			rw.WriteHeader(500)
 
 		} else {

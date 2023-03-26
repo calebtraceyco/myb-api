@@ -17,12 +17,14 @@ type DAO struct {
 }
 
 func (s DAO) AddUser(ctx context.Context, user *models.User) (resp *external.ExecResponse, err error) {
-
-	if resp, err = s.PSQL.ExecContext(ctx, s.Mapper.MapUserExec(user)); err != nil {
-		return nil, err
+	if exec, execErr := s.Mapper.MapUserExec(user); execErr == nil {
+		if resp, err = s.PSQL.ExecContext(ctx, exec); err != nil {
+			return nil, err
+		}
+	} else {
+		return nil, execErr
 	}
-
-	return resp, err
+	return resp, nil
 }
 
 func (s DAO) GetUser(ctx context.Context) {}
