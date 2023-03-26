@@ -1,0 +1,37 @@
+{
+  "payload": {
+    "request": {
+      "user": {
+        "detail": {
+          "firstName": "john",
+          "lastName": "fishman",
+          "email": "john.fishman@fish.com",
+          "username": "john",
+          "address": {
+            "addr1": "123 drum st",
+            "city": "Burlington",
+            "state": "VT",
+            "isPrimary": true
+          }
+        },
+        "emails": [
+          {
+            "address": "john.fishman@fish.com",
+            "isPrimary": true
+          }
+        ],
+        "addresses": [
+          {
+            "addr1": "TEST",
+            "addr2": "TEST",
+            "city": "TEST",
+            "state": "TEST",
+            "zip": "TEST",
+            "isPrimary": true
+          }
+        ],
+        "contacts": [{}]
+      }
+    }
+  }
+}

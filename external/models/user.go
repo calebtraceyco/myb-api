@@ -16,8 +16,8 @@ type User struct {
 	Addresses userinfo.Addresses `json:"addresses,omitempty" db:"addresses"`
 	Contacts  userinfo.Contacts  `json:"contacts,omitempty" db:"contacts"`
 
-	Token        string    `json:"token,omitempty"  db:"token"`
-	RefreshToken string    `json:"refreshToken,omitempty"  db:"refresh_token"`
-	CreatedAt    time.Time `json:"createdAt"  db:"created_at"`
-	UpdatedAt    time.Time `json:"updatedAt"  db:"updated_at"`
+	Token        *string    `json:"token,omitempty"  db:"token"`
+	RefreshToken *string    `json:"refreshToken,omitempty"  db:"refresh_token"`
+	CreatedAt    *time.Time `json:"createdAt"  db:"created_at"`
+	UpdatedAt    *time.Time `json:"updatedAt"  db:"updated_at"`
 }

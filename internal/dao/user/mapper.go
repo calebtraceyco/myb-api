@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/calebtraceyco/mind-your-business-api/external/models"
 	"github.com/calebtraceyco/mind-your-business-api/internal/dao/psql"
+	log "github.com/sirupsen/logrus"
 	"golang.org/x/exp/slices"
 	"reflect"
 	"strings"
@@ -27,112 +28,68 @@ func (m Mapper) MapUserExec(user *models.User) (string, error) {
 }
 
 func parseStructToSlices(obj any) (string, string) {
-	var tags, values []string
+	var fieldNames, values []string
+
+	fieldMap := make(map[string]any)
 
 	obj = dereferencePointer(obj)
 	t := reflect.TypeOf(obj)
 	v := reflect.ValueOf(obj)
-	numFields := t.NumField()
 
-	for i := 0; i < numFields; i++ {
+	for i := 0; i < t.NumField(); i++ {
 		field := v.Field(i)
-		tag := t.Field(i).Tag.Get(DatabaseStructTag)
+		// get the field name for struct value with 'db' tag
+		fieldName := t.Field(i).Tag.Get(DatabaseStructTag)
 
-		kind := field.Kind()
-
-		if field.IsValid() && tag != "" && !slices.Contains(excludedTags, tag) {
-			switch kind {
+		if field.IsValid() && fieldName != "" && !slices.Contains(excludedTags, fieldName) {
+			switch field.Kind() {
 			case reflect.String:
-				tags, values = handleFieldString(field, tag, tags, values)
+				fieldMap = handleFieldString(field, fieldName, fieldMap)
 			case reflect.Struct:
-				tags, values = handleFieldStruct(field, tag, tags, values)
+				fieldNames, values = handleFieldStruct(field, fieldName, fieldNames, values)
 			case reflect.Slice:
-				tags, values = handleFieldSlice(field, tag, tags, values)
+				fieldNames, values = handleFieldSlice(field, fieldName, fieldNames, values)
 			default:
+				continue
 			}
-		} else {
-			continue
 		}
 	}
 
-	return strings.Join(tags, ", "), strings.Join(values, ", ")
+	return strings.Join(fieldNames, ", "), strings.Join(values, ", ")
 }
 
-func handleFieldString(field reflect.Value, tag string, tags, values []string) ([]string, []string) {
-	tags = append(tags, tag)
-	values = append(values, wrapInSingleQuotes(field.String()))
-	return tags, values
+func handleFieldString(field reflect.Value, fieldName string, fieldMap map[string]any) map[string]any {
+	//fieldNames = append(fieldNames, fieldName)
+	if value, found := fieldMap[fieldName]; found {
+		value = strings.Join([]string{value.(string), wrapInSingleQuotes(field.String())}, ", ")
+	}
+	//values = append(values, wrapInSingleQuotes(field.String()))
+	return fieldMap
 }
 
+// handleFieldStruct turns a nested struct into a string to be stored as jsonb in postgres
+// TODO this seems bad since theres no validation for the json value being stored
 func handleFieldStruct(field reflect.Value, tag string, tags, values []string) ([]string, []string) {
-	if data, err := json.Marshal(field); err == nil {
+	if data, err := json.Marshal(field.Interface()); err == nil {
 		tags = append(tags, tag)
 		values = append(values, wrapInSingleQuotes(string(data)))
 	} else if err != nil {
-		panic(err)
+		log.Errorf("handleFieldStruct: error: %v", err)
 	}
 	return tags, values
 }
 
+// handleFieldSlice is a mess
 func handleFieldSlice(field reflect.Value, tag string, tags, values []string) ([]string, []string) {
-	fieldType := reflect.TypeOf(field)
-
-	for i := 0; i < fieldType.NumField(); i++ {
-		subField := reflect.ValueOf(field)
-		subValue := subField.Field(i)
-
-		if subField.IsValid() {
-			switch subValue.Kind() {
-			case reflect.String:
-				values = append(values, wrapInSingleQuotes(subValue.String()))
-			}
+	for i := 0; i < field.Len(); i++ {
+		subValue := field.Index(i)
+		if subValue.IsValid() && subValue.Kind() == reflect.String {
+			tags = append(tags, tag)
+			values = append(values, wrapInSingleQuotes(subValue.String()))
 		}
 	}
-
 	return []string{tag}, values
 }
-
-//
-//func mapFields(request any, daoModel any) error {
-//	requestValue := reflect.ValueOf(request).Elem()
-//	daoModelValue := reflect.ValueOf(daoModel).Elem()
-//
-//	for i := 0; i < requestValue.NumField(); i++ {
-//		requestField := requestValue.Field(i)
-//		daoModelField := daoModelValue.FieldByName(requestValue.Type().Field(i).Name)
-//
-//		if daoModelField.IsValid() && daoModelField.CanSet() {
-//			switch requestField.Kind() {
-//			case reflect.String:
-//				if str := requestField.String(); str != "" {
-//					//tags = append(tags, tag)
-//					//values = append(values, wrapInSingleQuotes(field.String()))
-//				}
-//			case reflect.Struct:
-//
-//				nestedModel := reflect.New(daoModelField.Type())
-//				if err := mapFields(requestField.Addr().Interface(), nestedModel.Interface()); err != nil {
-//					return err
-//				}
-//				daoModelField.Set(nestedModel.Elem())
-//			default:
-//				daoModelField.Set(requestField)
-//			}
-//		}
-//
-//		if requestField.Kind() == reflect.Struct {
-//			nestedModel := reflect.New(daoModelField.Type())
-//			if err := mapFields(requestField.Addr().Interface(), nestedModel.Interface()); err != nil {
-//				return err
-//			}
-//			daoModelField.Set(nestedModel.Elem())
-//		} else {
-//			daoModelField.Set(requestField)
-//		}
-//	}
-//
-//	return nil
-//}
 
 func dereferencePointer(obj any) any {
 	if reflect.ValueOf(obj).Kind() == reflect.Pointer {
