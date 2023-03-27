@@ -3,10 +3,10 @@
     "request": {
       "user": {
         "detail": {
-          "firstName": "trey",
-          "lastName": "antipasto",
-          "email": "trey.antipasto@fish.com",
-          "username": "trey123",
+          "firstName": "john",
+          "lastName": "fishman",
+          "email": "john.fishman@fish.com",
+          "username": "john",
           "address": {
             "addr1": "123 drum st",
             "city": "Burlington",
@@ -16,7 +16,7 @@
         },
         "emails": [
           {
-            "address": "trey.antipasto@fish.com",
+            "address": "john.fishman@fish.com",
             "isPrimary": true
           }
         ],

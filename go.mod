@@ -5,6 +5,7 @@ go 1.20
 require (
 	github.com/NYTimes/gziphandler v1.1.1
 	github.com/calebtraceyco/config v0.1.3
+	github.com/calebtraceyco/http v0.1.0
 	github.com/calebtraceyco/models v0.1.3
 	github.com/go-chi/chi/v5 v5.0.8
 	github.com/go-chi/cors v1.2.1
@@ -44,6 +45,7 @@ require (
 	github.com/swaggo/files v1.0.1 // indirect
 	github.com/temoto/robotstxt v1.1.2 // indirect
 	golang.org/x/crypto v0.7.0 // indirect
+	golang.org/x/exp v0.0.0-20230321023759-10a507213a29 // indirect
 	golang.org/x/net v0.8.0 // indirect
 	golang.org/x/sys v0.6.0 // indirect
 	golang.org/x/text v0.8.0 // indirect

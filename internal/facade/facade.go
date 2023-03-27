@@ -2,27 +2,43 @@ package facade
 
 import (
 	"context"
-	"github.com/calebtraceyco/mind-your-business-api/internal/dao/psql"
+	"github.com/calebtraceyco/mind-your-business-api/external"
+	"github.com/calebtraceyco/mind-your-business-api/external/endpoints"
+	"github.com/calebtraceyco/mind-your-business-api/internal/dao/user"
+	log "github.com/sirupsen/logrus"
+	"reflect"
 )
 
 type ServiceI interface {
-	NewUser(ctx context.Context, params any) (resp any, err error)
+	UserResponse(ctx context.Context, apiRequest external.ApiRequest) (resp *external.Response)
 }
 
 type Service struct {
-	PSQL psql.DAOI
+	UserDAO user.DAOI
 }
 
-func (s Service) NewUser(ctx context.Context, params any) (resp any, err error) {
-
-	// TODO add request validation
-	// TODO parse params and map request query
-
-	if resp, err = s.PSQL.ExecContext(ctx, ""); err != nil {
-		return nil, err
+func (s Service) UserResponse(ctx context.Context, apiRequest external.ApiRequest) (resp *external.Response) {
+	resp = new(external.Response)
+	// TODO validation
+	if apiRequest.Payload.Request.User == nil {
+		panic("missing user from payload")
 	}
+	log.Infoln(reflect.ValueOf(apiRequest))
 
-	// TODO add response mapping
-
-	return resp, nil
+	switch apiRequest.Payload.Endpoint {
+	case endpoints.NewUser:
+		log.Traceln("UserResponse: /newUser endpoint")
+		if daoResp, err := s.UserDAO.AddUser(ctx, apiRequest.Payload.Request.User); err != nil {
+			resp.SetErrorLog([]error{err}, "UserResponse", "500")
+			return resp
+		} else {
+			// TODO map user response
+			resp.Details = []any{daoResp}
+		}
+	default:
+		// TODO change to error and/or default call
+		// panic for debugging
+		panic("UserResponse: missing endpoint")
+	}
+	return resp
 }

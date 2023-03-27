@@ -1,6 +1,8 @@
 package routes
 
 import (
+	routes "github.com/calebtraceyco/mind-your-business-api/external/endpoints"
+	"github.com/calebtraceyco/mind-your-business-api/internal/facade"
 	"github.com/calebtraceyco/mind-your-business-api/internal/routes/endpoints"
 	"github.com/go-chi/chi/v5"
 	"github.com/swaggo/http-swagger"
@@ -11,15 +13,16 @@ type Handler struct {
 	Router endpoints.RouterI
 }
 
-func (h Handler) RouteHandler() *chi.Mux {
+func (h Handler) RouteHandler(service facade.ServiceI) *chi.Mux {
 	r := chi.NewRouter()
 	setMiddleware(r)
 
-	r.Get(endpoints.Health, h.Router.Health())
+	r.Get(routes.Health, h.Router.Health())
 
 	r.Route(v1BasePath, func(r chi.Router) {
-		r.Post(endpoints.NewUser, h.Router.NewUser())
+		r.Post(routes.NewUser, h.Router.NewUserHandler(service))
 	})
+
 	// serve swagger static page: http://localhost:6080/swagger/index.html
 	r.Route(swaggerBasePath, func(r chi.Router) {
 		r.Get(wildCard, httpSwagger.Handler(

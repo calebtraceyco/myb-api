@@ -1,18 +1,15 @@
 on:
   push:
-    branches:
-      - MYB-*
-      - main
-  pull_request_target:
-    branches:
-      - main
+    branches: [ FEAT-*, $default-branch ]
+#  pull_request:
+#    branches: [ $default-branch ]
 jobs:
   tests:
     strategy:
       matrix:
-        go-version: [ 1.20.x ]
+        go-version: [ 1.20.2 ]
         os: [ ubuntu-latest ]
-    name: Go Test (Go ${{ matrix.go-version }} on ${{ matrix.os }})
+    name: tests (Go ${{ matrix.go-version }} on ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -24,24 +21,25 @@ jobs:
       - name: Test
         run: go test -v ./...
   lint:
-    name: Go Lint
+    name: lint
     runs-on: ubuntu-latest
     permissions:
       actions: read
       contents: read
       security-events: write
     steps:
+      - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
         with:
-          go-version: 1.20.x
+          go-version: 1.20.2
           cache: false
       - uses: actions/checkout@v3
       - name: Go Lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: latest
+          version: v1.52
   analyze:
-    name: Analyze Code
+    name: analyze
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -60,7 +58,7 @@ jobs:
           languages: go
           queries: codeql-go
   build-image:
-    name: Build Image
+    name: build-image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -71,7 +69,7 @@ jobs:
 #        run: docker build . --file Dockerfile --tag myb-api:$(date +%s)
     needs: [ tests, lint, analyze ]
   push-image:
-    name: Push Image
+    name: push-image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

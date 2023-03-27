@@ -18,9 +18,9 @@ import (
 // @Failure      404  {object}  httputil.HTTPError
 // @Failure      500  {object}  httputil.HTTPError
 // @Router       /health [post]
-func (r *Router) Health() http.HandlerFunc {
+func (r Router) Health() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		log.WithTime(time.Now().Local()).Infoln("still alive?")
+		log.Traceln("=== Health Check === \n" + time.Now().Local().String())
 
 		w.WriteHeader(http.StatusOK)
 	}
